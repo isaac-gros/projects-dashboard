@@ -1,4 +1,4 @@
-# dvic-monitoring
+# DVIC Monitoring
 
 > Unofficial DVIC Monitoring app. Made with ❤ with Vue Material.
 
