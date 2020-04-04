@@ -1,6 +1,6 @@
 <template>
-	<div class="container" id="home">
-		<h1>Page connexion</h1>
+	<div class="container" id="dashboard">
+		<h1>Page dashboard</h1>
 	</div>
 </template>
 

@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
   /*
   ** Headers of the page
@@ -32,7 +34,7 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    vendor: ['vue-material'],
+    vendor: ['vue-material', '@nuxtjs/dotenv'],
     extend (config, { isDev }) {
       if (isDev && process.client) {
         config.module.rules.push({
@@ -43,5 +45,25 @@ module.exports = {
         })
       }
     }
-  }
+  },
+  modules: [
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: process.env.apiKey,
+          authDomain: process.env.authDomain,
+          databaseURL: process.env.databaseURL,
+          projectId: process.env.projectId,
+          storageBucket: process.env.storageBucket,
+          messagingSenderId: process.env.messagingSenderId,
+          appId: process.env.appId
+        },
+        services: {
+          realtimeDb: true,
+          auth: true
+        }
+      }
+    ]
+  ]
 }

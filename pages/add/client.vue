@@ -1,6 +1,6 @@
 <template>
-	<div class="container" id="home">
-		<h1>Page connexion</h1>
+	<div class="container" id="client__new">
+		<h1>Page nouveau client</h1>
 	</div>
 </template>
 
