@@ -13,10 +13,12 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "@nuxtjs/firebase": "^5.0.6",
-    "firebase": "^7.13.2",
+    "@nuxtjs/firebase": "^5.0.7",
+    "bootstrap-vue": "^2.11.0",
+    "firebase": "^7.14.0",
     "nuxt": "^2.12.2",
-    "vue-material": "latest"
+    "vue-material": "latest",
+    "vuelidate": "^0.7.5"
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",

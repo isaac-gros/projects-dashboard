@@ -28,6 +28,7 @@ module.exports = {
     { src: '~/assets/theme.scss', lang: 'scss' } // include vue-material theme engine
   ],
   plugins: [
+    { src: '~/plugins/bootstrap-vue' },
     { src: '~/plugins/vue-material' }
   ],
   build: {
