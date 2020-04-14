@@ -98,7 +98,7 @@ export default {
                 this.$fireAuth.signInWithEmailAndPassword(this.email, this.password)
                 .then(user => {
                     if(user) {
-                        console.log(user)
+                        this.$router.push("/dashboard")
                     }
                 })
                 .catch(error => {

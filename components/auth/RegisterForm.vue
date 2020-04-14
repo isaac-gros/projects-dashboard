@@ -136,10 +136,9 @@ export default {
                 // Proceed registration
                 this.$fireAuth
                     .createUserWithEmailAndPassword(this.email, this.password)
-                    .then(user => {
-                        if(user) {
-                            this.registerSuccess = true
-                            this.registerFunctionActive = false
+                    .then(userObject => {
+                        if(userObject) {
+                            this.writeUser(userObject.user.uid, userObject.user.email)
                         }
                     })
                     .catch(error => {
@@ -149,6 +148,22 @@ export default {
                         }
                     });
             }
+        },
+
+        // Write new user to database
+        writeUser(userId, userEmail) {
+            this.$fireDb.ref("users/" + userId).set({
+                email: userEmail
+            }, (error) => {
+                if(error) {
+                    this.registerFunctionActive = false
+                    this.registerErrorMessage = error.message
+                } else {
+                    this.registerSuccess = true
+                    this.registerFunctionActive = false
+                    this.$router.push("/dashboard")
+                }
+            })
         }
     },
 }
