@@ -1,8 +1,174 @@
 @import "~vue-material/dist/theme/engine"; // Import the theme engine
 
 @include md-register-theme("default", (
-  primary: md-get-palette-color(blue, A200), // The primary color of your application
-  accent: md-get-palette-color(red, A200) // The accent or secondary color
+	primary: #7936AC, // The primary color of your application
+	accent: #36A0AC // The accent or secondary color
 ));
 
 @import "~vue-material/dist/theme/all"; // Apply the theme
+
+// Colors
+$purple: #7936AC;
+$white: #fff;
+$black: #333;
+
+// Mixins
+@mixin flex-column {
+	display: flex;
+	flex-direction: column;
+}
+
+@mixin box-shadow {
+	box-shadow: 3px 5px 30px 0 rgba($black, 0.2);
+}
+
+// Paramètres généraux
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 67.9%;
+}
+
+// Authentification page
+#home {
+	@include flex-column;
+	min-height: 100vh;
+	justify-content: center;
+	position: relative;
+
+	&:after {
+		content:'';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: 75%;
+		background-color: $purple;
+	}
+
+	.forms_container {
+		@include box-shadow;
+		background-color: $white;
+		padding: 30px 0;
+		z-index: 1;
+		width: 75vw;
+		margin: 0 auto;
+
+		h1 {
+			font-size: 2em;
+		}
+		
+		&__form, &__separator {
+			@include flex-column;
+			width: 100%;
+			height: 100%;
+		}
+	
+		&__separator {
+			position: relative;
+			justify-content: center;
+	
+			&:before {
+				content: '';
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: 50%;
+				transform: translateX(-50%);
+				width: 1px;
+				background-color: $black;
+			}
+	
+			&:after {
+				content: 'OU';
+				padding: 20px;
+				text-align: center;
+				background-color: $white;
+				z-index: 1;
+			}
+		}
+
+		.md-button {
+			border-radius: 15px;
+			align-self: center;
+		}
+
+		.md-progress-spinner {
+			z-index: 2;
+		}
+	
+	}
+}
+
+// Dashboard page
+#dashboard {
+
+	.section_title {
+		padding: 30px 0;
+		position: relative;
+
+			&:after {
+				content: '';
+				position: absolute;
+				right: 0;
+				left: 0;
+				bottom: 20px;
+				width: 100%;
+				height: 1px;
+				background-color: $black;
+			}
+	}
+
+	.quick_action {
+		@include box-shadow;
+		opacity: 1;
+		transition: opacity 0.4s ease-in-out;
+
+		a {
+			text-decoration: none;
+		}
+
+		&__elements {
+			@include flex-column;
+			justify-content: center;
+			height: 175px;
+			align-items: center;
+
+			.md-icon {
+				margin: 20px 0;
+				color: $purple;
+			}
+
+			h2 {
+				text-align: center;
+			}
+
+			&.disabled {
+				opacity: 0.3;
+	
+				&:hover {
+					opacity: 0.3;
+				}
+			}
+		}
+
+		&:hover {
+			opacity: 0.5;
+		}
+	}
+
+	#lists {
+
+		.list_component {
+			margin-top: 30px;
+
+			.md-table {
+				@include box-shadow;
+			}
+		}
+	}
+
+}
