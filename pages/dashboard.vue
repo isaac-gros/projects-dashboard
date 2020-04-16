@@ -1,14 +1,18 @@
 <template>
-	<div class="container" id="dashboard">
-		<h1>Actions rapides</h1>
+	<div id="dashboard">
+		<SectionQuickActions/>
+		<SectionLists/>
 	</div>
 </template>
 
 <script>
+import SectionQuickActions from "~/components/dashboard/SectionQuickActions"
+import SectionLists from "~/components/dashboard/SectionLists"
+
 export default {
 	components: {
-		LoginForm,
-		RegisterForm
+		SectionQuickActions,
+		SectionLists
 	},
 	data() {
 		return {
