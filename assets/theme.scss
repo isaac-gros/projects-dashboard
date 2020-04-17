@@ -47,6 +47,19 @@ html {
 		height: 1px;
 		background-color: $black;
 	}
+
+	&__icon {
+		animation: zoomIn 0.4s forwards;
+	}
+}
+
+.container {
+	opacity: 1;
+	transition: opacity 1s ease;
+	
+	&.function_done {
+		opacity: 0;
+	}
 }
 
 .submit_buttons {
@@ -177,4 +190,14 @@ html {
 		}
 	}
 
+}
+
+@keyframes zoomIn {
+	from {
+		transform: scale(0);
+	}
+	
+	to {
+		transform: scale(1);
+	}
 }

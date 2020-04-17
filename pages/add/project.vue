@@ -1,8 +1,20 @@
 <template>
-	<div class="container" id="project__new">
+	<div class="container" id="project__new" :class="creationDone ? 'function_done' : ''">
 		<div class="row">
 			<div class="col-12">
-				<h1 class="section_title">Ajouter un nouveau projet</h1>
+				<h1 class="section_title">
+					Ajouter un nouveau projet
+					<md-progress-spinner 
+						class="md-primary"
+						md-mode="indeterminate"
+						md-diameter=25
+						md-stroke=3
+						v-if="creationActive">
+					</md-progress-spinner>
+					<md-icon
+						v-if="creationDone"
+						class="md-primary section_title__icon">done</md-icon>
+				</h1>
 			</div>
 			<div class="col-12">
 				<div class="container">
@@ -23,6 +35,9 @@
 								</md-button>
 							</div>
 						</div>
+						<div class="col-12" v-if="errorMessage">
+							<p>Erreur lors de la création du projet : {{ errorMessage }}</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -42,11 +57,17 @@ export default {
 
     data() {
         return {
-            userId: '',
+			// Form default fields
+			userId: '',
             project: {
                 status: "todo",
                 invalid: true
-            }
+			},
+			
+			// States of the component
+			creationActive: false,
+			creationDone: false,
+			errorMessage: ''
         }
     },
     
@@ -60,15 +81,28 @@ export default {
         // Submit project to Firebase
         submitProject() {
             if(!this.project.invalid) {
-                console.log({
+				this.errorMessage = ''
+				this.creationActive = true
+
+				this.$fireDb.ref("projects/").push({
                     "owner": this.userId,
-                    "title" : this.project.title,
-                    "endDate" : this.project.endDate,
+					"title" : this.project.title,
+					"created": Date.now(),
+                    "endDate" : (this.project.endDate) ? this.project.endDate.getTime() : "Non définie",
                     "status" : this.project.status,
                     "clients": this.project.clients
-                })
+				}).then(response => {
+					this.creationActive = false
+					this.creationDone = true
+					setTimeout(() => {
+						this.$router.push('/dashboard')
+					}, 1000)
+				}).catch(error => {
+					this.creationActive = false
+					this.errorMessage = error.message
+				})
             }
-        },
+		},
 
         // Set calendar to french
         frenchLocale() {
