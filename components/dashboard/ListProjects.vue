@@ -13,15 +13,14 @@
 		<div v-if="!noProjects">
 			<md-table v-model="projects" md-sort="asc">
 				<md-table-row slot="md-table-row" slot-scope="{ item }">
-						<md-table-cell md-label="Titre" md-sort-by="title">
-							<nuxt-link :to="'project/' + item.id">
-								{{ item.title }}
-							</nuxt-link>
-						</md-table-cell>
-						<md-table-cell md-label="Client(s)" md-sort-by="clients" v-html="item.clients"></md-table-cell>
-						<md-table-cell md-label="Statut" md-sort-by="status">{{ item.status }}</md-table-cell>
-						<md-table-cell md-label="Échéance" md-sort-by="endDate" class="md-primary">{{ item.endDate }}</md-table-cell>
-					</nuxt-link>
+					<md-table-cell md-label="Titre" md-sort-by="title">
+						<nuxt-link :to="'project/' + item.id">
+							{{ item.title }}
+						</nuxt-link>
+					</md-table-cell>
+					<md-table-cell md-label="Client(s)" md-sort-by="clients" v-html="item.clients"></md-table-cell>
+					<md-table-cell md-label="Statut" md-sort-by="status">{{ item.status }}</md-table-cell>
+					<md-table-cell md-label="Échéance" md-sort-by="endDate" class="md-primary">{{ item.endDate }}</md-table-cell>
 				</md-table-row>
 			</md-table>
 		</div>
