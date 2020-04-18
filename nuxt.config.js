@@ -65,6 +65,13 @@ module.exports = {
           auth: true
         }
       }
+    ],
+    [
+      '@nuxtjs/moment',
+      {
+        defaultLocale: 'fr',
+        locales: ['fr']
+      }
     ]
   ]
 }

@@ -87,10 +87,10 @@ export default {
 				this.$fireDb.ref("projects/").push({
                     "owner": this.userId,
 					"title" : this.project.title,
-					"created": Date.now(),
-                    "endDate" : (this.project.endDate) ? this.project.endDate.getTime() : "Non définie",
+					"created": this.$moment().toDate().getTime(),
+                    "endDate" : (this.project.endDate) ? this.project.endDate.getTime() : null,
                     "status" : this.project.status,
-                    "clients": this.project.clients
+                    "clients": (this.project.clients.length > 0) ? this.project.clients : null
 				}).then(response => {
 					this.creationActive = false
 					this.creationDone = true
