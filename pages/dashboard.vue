@@ -1,51 +1,36 @@
 <template>
 	<div id="dashboard">
 		<SectionQuickActions/>
-		<SectionLists/>
+		<div class="container" id="lists">
+			<div class="row">
+				<div class="col-lg-6 col-md-12">
+					<ListProjects/>
+				</div>
+				<div class="col-lg-6 col-md-12">
+					<!-- <ListClients/> -->
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 import SectionQuickActions from "~/components/dashboard/SectionQuickActions"
-import SectionLists from "~/components/dashboard/SectionLists"
+import ListProjects from "~/components/dashboard/ListProjects"
+import ListClients from "~/components/dashboard/ListClients"
 
 export default {
 	components: {
 		SectionQuickActions,
-		SectionLists
+		ListProjects,
+		ListClients
 	},
-	data() {
-		return {
-			userProjects: [],
-			userClients: []
-		}
-	},
-	methods: {
-		
-		// Fill the page with the user's data
-		fetchUserData() {
-			this.$fireAuth.onAuthStateChanged(user => {
-				if(user) {
-					let userId = user.uid
-					let userProjects = this.fetchUserProjects(userId)
-					let userClients = this.fetchUserClients(userId)
-
-				} else {
-					this.$router.push("/")
-				}
-			})
-		},
-
-		fetchUserProjects(userId) {
-			// TODO : Fetch user projects
-		},
-		
-		fetchUserClients(userId) {
-			// TODO : Fetch user clients
-		}
-	},
-	created() {
-		this.fetchUserData()
+	mounted() {
+		this.$fireAuth.onAuthStateChanged(user => {
+			if(!user) {
+				this.$router.push("/")
+			}
+		})
 	}
 }
 </script>
