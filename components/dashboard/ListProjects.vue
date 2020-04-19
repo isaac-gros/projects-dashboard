@@ -89,12 +89,13 @@ export default {
 			for(let [projectId, project] of Object.entries(projects)) {
 
 				let projectStatus = project.status
-				let projectEndDate = (project.endDate !== "Non définie") ? this.$moment(project.endDate).format("L") : project.endDate
+				let projectEndDate = (typeof(project.endDate) !== "undefined") ? project.endDate : "Indéfinie"
+				let projectClients = this.readProjectClientsData(project.clients)
 				readableData.push({
 					"id": projectId,
 					"title": project.title,
 					"endDate": projectEndDate,
-					"clients": this.readProjectClientsData(project.clients),
+					"clients": projectClients,
 					"status": statusTranslations[projectStatus].value
 				})
 			}
@@ -108,7 +109,7 @@ export default {
 			let clientsString = ""
 			let clientIndex = 1
 
-			if(typeof(clients) !== "string") {
+			if(typeof(clients) !== "undefined") {
 				for(let clientId of clients) {
 					clientsString += clientId
 					if(clients.length > 1) {
@@ -117,7 +118,7 @@ export default {
 					clientIndex++
 				}
 			} else {
-				clientsString = clients
+				clientsString = "Aucun client	"
 			}
 
 			return clientsString

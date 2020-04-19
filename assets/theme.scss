@@ -201,3 +201,20 @@ html {
 		transform: scale(1);
 	}
 }
+
+// Error page
+.error_page {
+	@include flex-column;
+	height: 100vh;
+	overflow: hidden;
+	justify-content: center;
+	align-items: center;
+
+	&__message {
+		text-align: center;
+
+		h1 {
+			font-size: 3rem;
+		}
+	}
+}

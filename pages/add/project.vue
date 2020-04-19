@@ -60,8 +60,8 @@ export default {
 			// Form default fields
 			userId: '',
             project: {
-                status: "todo",
-                invalid: true
+				status: "todo",
+				invalid: null
 			},
 			
 			// States of the component
@@ -88,7 +88,7 @@ export default {
                     "owner": this.userId,
 					"title" : this.project.title,
 					"created": this.$moment().toDate().getTime(),
-                    "endDate" : (this.project.endDate) ? this.project.endDate.getTime() : null,
+                    "endDate" : (this.project.endDate) ? this.$moment(this.project.endDate).format("L") : null,
                     "status" : this.project.status,
                     "clients": (this.project.clients.length > 0) ? this.project.clients : null
 				}).then(response => {

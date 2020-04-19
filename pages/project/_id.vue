@@ -1,11 +1,204 @@
 <template>
-	<div class="container" id="project__view">
-		<h1>Page projet individuel</h1>
+	<div class="container" id="project__view" :class="updateDone ? 'function_done' : ''">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="section_title">
+					Modifier un projet
+					<md-progress-spinner 
+						class="md-primary"
+						md-mode="indeterminate"
+						md-diameter=25
+						md-stroke=3
+						v-if="updateActive">
+					</md-progress-spinner>
+					<md-icon
+						v-if="updateDone"
+						class="md-primary section_title__icon">done</md-icon>
+				</h1>
+			</div>
+			<div class="col-12" v-if="deleteStepIndex == 1">
+				<div class="alert alert-danger" role="alert">
+					La suppression est irréversible. Confirmer ?
+				</div>
+			</div>
+			<div class="col-12">
+				<div class="container">
+					<ProjectForm
+						:object="project"
+						@input="(update) => {project = update}"/>
+					<div class="row">
+						<div class="col-12">
+							<div class="submit_buttons">
+								<md-button class="md-raised" v-on:click="cancelProject">
+									Annuler
+								</md-button>
+								<div class="submit_buttons__choices">
+									<md-button 
+										class="md-raised md-primary"
+										:disabled="project.invalid"
+										v-on:click="updateProject">
+										Mettre à jour
+									</md-button>
+									<md-button
+										class="md-raised"
+										v-on:click="deleteProject"
+										:disabled="deleteStepIndex == 2">
+										{{ deleteStep[deleteStepIndex] }}
+									</md-button>
+								</div>
+							</div>
+						</div>
+						<div class="col-12" v-if="errorMessage">
+							<p>Erreur lors de la mise à jour du projet : {{ errorMessage }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
+import ProjectForm from "~/components/forms/ProjectForm.vue"
+
 export default {
-	// Code
+    name: "ProjectView",
+
+    components: {
+        ProjectForm
+	},
+	
+	// Check if the id parameter has correct format 
+	async validate({ params }) {
+		return /^([A-Z]|[a-z]|(\-|\_)|[0-9]){20}$/.test(params.id)
+	},
+
+    data() {
+        return {
+			// Form fields
+			projectId: '',
+			project: {
+				preventEdit: true,
+				invalid: false
+			},
+			
+			// States of the component
+			updateActive: true,
+			updateDone: false,
+			errorMessage: '',
+
+			// Confirm deletion
+			deleteStepIndex: 0,
+			deleteStep: [
+				"Supprimer le projet",
+				"Confirmer la suppression",
+				"Suppression..."
+			]
+        }
+    },
+    
+    methods: {
+
+        // Cancel project creation
+        cancelProject() {
+            this.$router.back()
+		},
+
+        // Update project to Firebase
+        updateProject() {
+            if(!this.project.invalid) {
+				this.deleteStepIndex = 0
+				this.errorMessage = ''
+				this.creationActive = true
+				alert(this.project.endDate)
+
+				this.$fireDb.ref("projects/" + this.projectId).update({
+					"title" : this.project.title,
+					"endDate" : (this.project.endDate) ? this.project.endDate : null,
+					"status" : this.project.status,
+					"clients": (this.project.clients.length > 0) ? this.project.clients : null
+				}).then(response => {
+					this.updateActive = false
+					this.updateDone = true
+					setTimeout(() => {
+						this.$router.push('/dashboard')
+					}, 1000)
+				}).catch(error => {
+					this.updateActive = false
+					this.errorMessage = error.message
+				})
+			}
+		},
+
+		deleteProject() {
+			this.deleteStepIndex++
+			if(this.deleteStepIndex == 2) {
+				
+				// Disable project edition
+				this.project.preventEdit = true
+				this.updateActive = true
+
+				// Delete project from Firebase
+				this.$fireDb.ref("projects/" + this.projectId)
+					.remove()
+					.then(response => {
+						this.updateActive = false
+						this.updateDone = true
+						this.$router.push('/dashboard')
+					})
+
+			}	
+		},
+
+		// Display project
+		displayProject(project) {
+			this.project.title = project.title
+			this.project.endDate = project.endDate
+			this.project.status = project.status
+			this.project.clients = project.clients
+			this.project.preventEdit = false
+			this.updateActive = false
+		},
+
+        // Set calendar to french
+        frenchLocale() {
+            return {
+                startYear: 1900,
+                endYear: 2099,
+                dateFormat: 'dd/MM/yyyy',
+                days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                shortDays: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeudi', 'Ven', 'Sam'],
+                shorterDays: ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S'],
+                months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                shortMonths: ['Jan', 'Fév', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
+                shorterMonths: ['J', 'F', 'M', 'A', 'M', 'Juin', 'Juil', 'A', 'Se', 'O', 'N', 'D'],
+                firstDayOfAWeek: 1
+            }
+        }
+    },
+
+    mounted() {
+
+        this.$fireAuth.onAuthStateChanged(user => {
+            if(user) {
+
+				// Check if the user has right to update a project
+				this.$fireDb.ref("projects/" + this.$route.params.id)
+					.on('value', snapshot => {
+						let project = snapshot.val()
+						if(project.owner === user.uid) {
+							this.projectId = this.$route.params.id
+							this.displayProject(project) // Display and edit project
+						} else {
+							this.$nuxt.error({ statusCode: 403 }) // Redirect user to a 403 error page
+						}
+					})
+            } else {
+				this.$router.push('/')
+			}
+		})
+        this.$material.locale = this.frenchLocale()
+	}
+
 }
 </script>
