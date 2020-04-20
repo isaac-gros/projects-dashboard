@@ -48,6 +48,7 @@ module.exports = {
     }
   },
   modules: [
+    ['nuxt-clipboard2'],
     [
       '@nuxtjs/firebase',
       {

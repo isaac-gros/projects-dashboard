@@ -186,20 +186,25 @@ html {
 
 			.md-table {
 				@include box-shadow;
+
+				.md-table-cell-container {
+					
+					.action {
+						cursor: pointer;
+						display: inline-block;
+						margin-left: 7px;
+						transform: scale(0);
+						transition: all 0.2s;
+					}
+
+					&:hover .action {
+						transform: scale(1);
+					}
+				}
 			}
 		}
 	}
 
-}
-
-@keyframes zoomIn {
-	from {
-		transform: scale(0);
-	}
-	
-	to {
-		transform: scale(1);
-	}
 }
 
 // Error page
@@ -216,5 +221,16 @@ html {
 		h1 {
 			font-size: 3rem;
 		}
+	}
+}
+
+// Key frames
+@keyframes zoomIn {
+	from {
+		transform: scale(0);
+	}
+	
+	to {
+		transform: scale(1);
 	}
 }
