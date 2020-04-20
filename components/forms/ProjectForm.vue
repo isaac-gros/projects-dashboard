@@ -30,12 +30,21 @@
         </div>
 
         <div class="col-md-6 col-12">
-            <md-field>
+            <md-field v-if="object.userHasClients" >
                 <label for="clients">Commanditaire(s)</label>
-                <md-select name="clients" v-model="object.clients" :disabled="object.preventEdit" multiple>
-                    <md-option value="client_id_0">Fausse valeure</md-option>
-                    <md-option value="client_id_1">Une autre fausse valeure</md-option>
+                 <md-select 
+                    multiple
+                    name="clients"
+                    v-model="object.clients" 
+                    :disabled="object.preventEdit">
+                    <md-option v-for="(client) in object.userClients" v-bind:key="client" :value="client.id">
+                        {{ client.name }}
+                    </md-option>
                 </md-select>
+            </md-field>
+            <md-field v-else>
+                <label>Aucun client n'a été ajouté</label>
+                <md-input disabled></md-input>
             </md-field>
         </div>
     </form>
@@ -57,7 +66,6 @@ export default {
     },
 
     mounted() {
-        console.log("Mounted, invalid = " + this.object.invalid)
         this.object.invalid = true
     },
 

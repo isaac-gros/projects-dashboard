@@ -76,8 +76,12 @@ export default {
     data() {
         return {
 			// Form fields
+			userId: '',
 			projectId: '',
 			project: {
+				clients: [], // Already selected clients
+				userClients: [], // All clients created
+				userHasClients: false,
 				preventEdit: true,
 				invalid: false
 			},
@@ -110,13 +114,12 @@ export default {
 				this.deleteStepIndex = 0
 				this.errorMessage = ''
 				this.creationActive = true
-				alert(this.project.endDate)
 
 				this.$fireDb.ref("projects/" + this.projectId).update({
 					"title" : this.project.title,
 					"endDate" : (this.project.endDate) ? this.project.endDate : null,
 					"status" : this.project.status,
-					"clients": (this.project.clients.length > 0) ? this.project.clients : null
+					"clients": (this.project.clients) ? this.project.clients : null
 				}).then(response => {
 					this.updateActive = false
 					this.updateDone = true
@@ -152,12 +155,44 @@ export default {
 
 		// Display project
 		displayProject(project) {
+
+			// Project data
+			this.project.clients = project.clients
 			this.project.title = project.title
 			this.project.endDate = project.endDate
 			this.project.status = project.status
-			this.project.clients = project.clients
+
+			// Status of the form
+			this.project.userHasClients = (this.project.userHasClients !== null)
 			this.project.preventEdit = false
 			this.updateActive = false
+		},
+
+		fetchUserClients() {
+			// Retrieve all clients created by user
+			this.$fireDb.ref("clients/")
+				.orderByChild("owner")
+				.equalTo(this.userId)
+				.on('value', snapshot => {
+					this.project.userClients = this.readUserClients(snapshot.val())
+				})
+		},
+
+		// Display clients in front-end
+		readUserClients(clients) {
+
+			// Final array where the data will be readable
+			let readableData = []
+			if(clients) {
+				for(let [clientId, client] of Object.entries(clients)) {
+					readableData.push({
+						"id": clientId,
+						"name": client.name,
+					})
+				}
+			}
+			
+			return readableData
 		},
 
         // Set calendar to french
@@ -187,7 +222,9 @@ export default {
 					.on('value', snapshot => {
 						let project = snapshot.val()
 						if(project.owner === user.uid) {
+							this.userId = user.uid
 							this.projectId = this.$route.params.id
+							this.fetchUserClients() // Get the user client
 							this.displayProject(project) // Display and edit project
 						} else {
 							this.$nuxt.error({ statusCode: 403 }) // Redirect user to a 403 error page

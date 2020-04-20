@@ -61,6 +61,8 @@ export default {
 			userId: '',
             project: {
 				status: "todo",
+				userClients: [],
+				userHasClients: false,
 				invalid: null
 			},
 			
@@ -90,7 +92,7 @@ export default {
 					"created": this.$moment().toDate().getTime(),
                     "endDate" : (this.project.endDate) ? this.$moment(this.project.endDate).format("L") : null,
                     "status" : this.project.status,
-                    "clients": (this.project.clients.length > 0) ? this.project.clients : null
+                    "clients": (this.project.clients) ? this.project.clients : null
 				}).then(response => {
 					this.creationActive = false
 					this.creationDone = true
@@ -102,6 +104,36 @@ export default {
 					this.errorMessage = error.message
 				})
             }
+		},
+
+		// Get user's client from Firebase
+		getUserClients() {
+			this.$fireDb.ref("clients/")
+				.orderByChild("owner")
+				.equalTo(this.userId)
+				.on('value', snapshot => {
+					let clients = snapshot.val()
+					this.project.userClients = this.readUserClients(clients)
+					this.project.userHasClients = (this.project.userClients !== null)
+				})
+		},
+
+		// Display clients in front-end
+		readUserClients(clients) {
+
+			// Final array where the data will be readable
+			let readableData = []
+			if(clients) {
+				this.userHasClients = true
+				for(let [clientId, client] of Object.entries(clients)) {
+					readableData.push({
+						"id": clientId,
+						"name": client.name,
+					})
+				}
+			}
+			
+			return readableData
 		},
 
         // Set calendar to french
@@ -127,7 +159,8 @@ export default {
         this.$material.locale = this.frenchLocale();
         this.$fireAuth.onAuthStateChanged(user => {
             if(user) {
-                this.userId = user.uid
+				this.userId = user.uid
+				this.getUserClients()
             } else {
 				this.$router.push('/')
 			}
