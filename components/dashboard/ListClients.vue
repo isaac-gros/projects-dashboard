@@ -1,6 +1,15 @@
 <template>
     <div class="list_component">
-        <h1 class="section_title">Liste des clients</h1>
+        <h1 class="section_title">
+			Liste des clients
+			<md-progress-spinner 
+				class="md-primary"
+				md-mode="indeterminate"
+				md-diameter=25
+				md-stroke=3
+				v-if="fetchActive">
+			</md-progress-spinner>
+		</h1>
         <div v-if="!noClients">
             <md-table v-model="clients" md-sort="asc">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
