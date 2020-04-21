@@ -1,8 +1,13 @@
 # DVIC Monitoring
 
-> Unofficial DVIC Monitoring app. Made with ❤ with Vue Material.
+Application NuxtJS de gestion de projets pour indépendants. Réalisé avec [Vue Material](https://vuematerial.io/)
 
-## Build Setup
+## Features
+* Création et modification de projets
+* Création et modification de clients
+* Actions rapides depuis le tableau de bord
+
+### Installation
 
 ``` bash
 # install dependencies
@@ -18,5 +23,3 @@ $ npm start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
