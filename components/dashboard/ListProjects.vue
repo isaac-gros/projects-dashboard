@@ -104,21 +104,26 @@ export default {
 		},
 
 		// Turns clients IDs to their real name
-		// TODO : Fetch clients IDs from Firebase
 		readProjectClientsData(clients) {
 			let clientsString = ""
 			let clientIndex = 1
-
 			if(typeof(clients) !== "undefined") {
 				for(let clientId of clients) {
-					clientsString += clientId
+					
+					// Retrieve the client by it ID
+					this.$fireDb.ref("clients/" + clientId + "/name")
+						.on('value', snapshot => {
+							clientsString += snapshot.val()
+						})
+
+					// Display settings
 					if(clients.length > 1) {
-						clientsString += (clientIndex == clients.length) ? '' : ',<br>'
+						clientsString += (clientIndex == clients.length) ? '' : ' — <br>'
 					}
 					clientIndex++
 				}
 			} else {
-				clientsString = "Aucun client	"
+				clientsString = "Aucun client"
 			}
 
 			return clientsString

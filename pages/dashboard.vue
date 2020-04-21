@@ -7,7 +7,7 @@
 					<ListProjects/>
 				</div>
 				<div class="col-lg-6 col-md-12">
-					<!-- <ListClients/> -->
+					<ListClients/>
 				</div>
 			</div>
 		</div>
