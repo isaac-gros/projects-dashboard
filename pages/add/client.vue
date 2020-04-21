@@ -52,7 +52,14 @@
 import ClientForm from "~/components/forms/ClientForm.vue"
 
 export default {
-    name: "ProjectAdd",
+	name: "ProjectAdd",
+	
+	head: {
+		titleTemplate: "Ajouter un client",
+		meta: [
+			{ hid: 'description', name: 'description', content: 'Créez un nouveau client pour vos projets.' }
+		]
+	},
 
     components: {
         ClientForm

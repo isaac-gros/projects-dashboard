@@ -20,11 +20,20 @@ import ListProjects from "~/components/dashboard/ListProjects"
 import ListClients from "~/components/dashboard/ListClients"
 
 export default {
+
+	head: {
+		titleTemplate: "Mes projets - Tableau de bord",
+		meta: [
+			{ hid: 'description', name: 'description', content: 'Consulter et gérez vos clients et projets.' }
+		]
+	},
+
 	components: {
 		SectionQuickActions,
 		ListProjects,
 		ListClients
 	},
+
 	mounted() {
 		this.$fireAuth.onAuthStateChanged(user => {
 			if(!user) {

@@ -64,6 +64,15 @@ import ClientForm from "~/components/forms/ClientForm"
 export default {
 	name: "ClientView",
 
+	head() {
+		return {
+			titleTemplate: `Éditer le client ${this.clientName}`,
+			meta: [
+				{ hid: 'description', name: 'description', content: `Mettre à jour le client ${this.clientName}.` }
+			]
+		}
+	},
+
 	components: {
 		ClientForm
 	},
@@ -77,6 +86,7 @@ export default {
         return {
 			// Form fields
 			clientId: '',
+			clientName: '', // Meta title
 			client: {
 				preventEdit: true,
 				invalid: false
@@ -168,6 +178,7 @@ export default {
 						let client = snapshot.val()
 						if(client.owner === user.uid) {
 							this.clientId = this.$route.params.id
+							this.clientName = client.name
 							this.displayClient(client) // Display and edit client
 						} else {
 							this.$nuxt.error({ statusCode: 403 }) // Redirect user to a 403 error page

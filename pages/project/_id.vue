@@ -62,7 +62,16 @@
 import ProjectForm from "~/components/forms/ProjectForm.vue"
 
 export default {
-    name: "ProjectView",
+	name: "ProjectView",
+	
+	head() {
+		return {
+			titleTemplate: `Éditer le projet ${this.projectTitle}`,
+			meta: [
+				{ hid: 'description', name: 'description', content: `Mettre à jour le projet ${this.projectTitle}.` }
+			]
+		}
+	},
 
     components: {
         ProjectForm
@@ -78,6 +87,7 @@ export default {
 			// Form fields
 			userId: '',
 			projectId: '',
+			projectTitle: '', // Meta title
 			project: {
 				clients: [], // Already selected clients
 				userClients: [], // All clients created
@@ -224,6 +234,7 @@ export default {
 						if(project.owner === user.uid) {
 							this.userId = user.uid
 							this.projectId = this.$route.params.id
+							this.projectTitle = project.title
 							this.fetchUserClients() // Get the user client
 							this.displayProject(project) // Display and edit project
 						} else {

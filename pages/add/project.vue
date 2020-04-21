@@ -49,7 +49,14 @@
 import ProjectForm from "~/components/forms/ProjectForm.vue"
 
 export default {
-    name: "ProjectAdd",
+	name: "ProjectAdd",
+	
+	head: {
+		titleTemplate: "Ajouter un projet",
+		meta: [
+			{ hid: 'description', name: 'description', content: 'Créez un nouveau projet.' }
+		]
+	},
 
     components: {
         ProjectForm
