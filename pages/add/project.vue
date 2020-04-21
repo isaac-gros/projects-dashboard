@@ -49,7 +49,14 @@
 import ProjectForm from "~/components/forms/ProjectForm.vue"
 
 export default {
-    name: "ProjectAdd",
+	name: "ProjectAdd",
+	
+	head: {
+		titleTemplate: "Ajouter un projet",
+		meta: [
+			{ hid: 'description', name: 'description', content: 'Créez un nouveau projet.' }
+		]
+	},
 
     components: {
         ProjectForm
@@ -83,9 +90,12 @@ export default {
         // Submit project to Firebase
         submitProject() {
             if(!this.project.invalid) {
+
+				// Update component states
 				this.errorMessage = ''
 				this.creationActive = true
 
+				// Insert new project to Firebase
 				this.$fireDb.ref("projects/").push({
                     "owner": this.userId,
 					"title" : this.project.title,
@@ -93,20 +103,20 @@ export default {
                     "endDate" : (this.project.endDate) ? this.$moment(this.project.endDate).format("L") : null,
                     "status" : this.project.status,
                     "clients": (this.project.clients) ? this.project.clients : null
-				}).then(response => {
+				}).then(response => { // Update app
 					this.creationActive = false
 					this.creationDone = true
 					setTimeout(() => {
 						this.$router.push('/dashboard')
 					}, 1000)
-				}).catch(error => {
+				}).catch(error => { // Display error
 					this.creationActive = false
 					this.errorMessage = error.message
 				})
             }
 		},
 
-		// Get user's client from Firebase
+		// Get user clients from Firebase
 		getUserClients() {
 			this.$fireDb.ref("clients/")
 				.orderByChild("owner")
@@ -118,7 +128,7 @@ export default {
 				})
 		},
 
-		// Display clients in front-end
+		// Read clients objects to display them
 		readUserClients(clients) {
 
 			// Final array where the data will be readable
@@ -153,10 +163,9 @@ export default {
         }
     },
 
-	// Set calendar to french
 	// Redirect to home if there is no logged in user
     mounted() {
-        this.$material.locale = this.frenchLocale();
+        this.$material.locale = this.frenchLocale()
         this.$fireAuth.onAuthStateChanged(user => {
             if(user) {
 				this.userId = user.uid

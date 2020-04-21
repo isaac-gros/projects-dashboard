@@ -52,7 +52,14 @@
 import ClientForm from "~/components/forms/ClientForm.vue"
 
 export default {
-    name: "ProjectAdd",
+	name: "ProjectAdd",
+	
+	head: {
+		titleTemplate: "Ajouter un client",
+		meta: [
+			{ hid: 'description', name: 'description', content: 'Créez un nouveau client pour vos projets.' }
+		]
+	},
 
     components: {
         ClientForm
@@ -83,22 +90,25 @@ export default {
         // Submit client to Firebase
         submitClient() {
             if(!this.client.invalid) {
+
+				// Update component states
 				this.client.preventEdit = true
 				this.errorMessage = ''
 				this.creationActive = true
 
+				// Insert new client to Firebase
 				this.$fireDb.ref("clients/").push({
                     "owner": this.userId,
 					"name" : this.client.name,
 					"phone": (this.client.phone) ? this.client.phone : null,
                     "mail" : (this.client.mail) ? this.client.mail : null
-				}).then(response => {
+				}).then(response => { // Update app
 					this.creationActive = false
 					this.creationDone = true
 					setTimeout(() => {
 						this.$router.push('/dashboard')
 					}, 1000)
-				}).catch(error => {
+				}).catch(error => { // Display error
 					this.creationActive = false
 					this.errorMessage = error.message
 				})
@@ -106,7 +116,6 @@ export default {
 		}
     },
 
-	// Set calendar to french
 	// Redirect to home if there is no logged in user
     mounted() {
         this.$fireAuth.onAuthStateChanged(user => {

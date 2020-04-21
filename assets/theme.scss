@@ -30,6 +30,45 @@ $black: #333;
 
 html {
 	font-size: 67.9%;
+	overflow-x: hidden;
+}
+
+// Menu
+.menu {
+
+	&__container {
+		display: flex;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: 75px;
+		background: $purple;
+
+		button {
+			margin: 20px auto;
+
+			.md-icon {
+				color: $white !important;
+				margin: 20px auto;
+			}
+		}
+	}
+
+	&__drawer {
+		width: 25%;
+		min-width: 275px;
+	}
+
+	&__legals {
+		position: absolute;
+		bottom: 0;
+		padding: 20px;
+		font-size: 1rem;
+		text-align: right;
+		width: 100%;
+		opacity: 0.25;
+	}
 }
 
 // Common displays
@@ -135,10 +174,28 @@ html {
 			z-index: 2;
 		}
 	
+	}	
+}
+
+// Loading screen
+.spinner_container {
+	@include flex-column;
+	min-height: 100vh;
+	justify-content: center;
+
+	&__element {
+		display: flex;
+		justify-content: center;
+	}
+
+	p {
+		font-size: 1.2rem;
+		text-align: center;
+		margin: 15px 0;
 	}
 }
 
-// Dashboard page
+// Dashboard
 #dashboard {
 
 	.quick_action {
@@ -204,7 +261,6 @@ html {
 			}
 		}
 	}
-
 }
 
 // Error page
@@ -224,7 +280,7 @@ html {
 	}
 }
 
-// Key frames
+// Keyframes
 @keyframes zoomIn {
 	from {
 		transform: scale(0);

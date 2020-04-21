@@ -122,6 +122,8 @@ export default {
 
         // Register an user
         registerUser() {
+
+            // Update app states
             this.$v.$touch()
             this.registerErrorMessage = ''
             this.showPassword,
@@ -129,11 +131,7 @@ export default {
 
             // Submit form to Firebase
             if(!this.$v.invalid) {
-
-                // Enable md-spinner
                 this.registerFunctionActive = true
-
-                // Proceed registration
                 this.$fireAuth
                     .createUserWithEmailAndPassword(this.email, this.password)
                     .then(userObject => {
@@ -146,7 +144,7 @@ export default {
                             this.registerErrorMessage = error.message
                             this.registerFunctionActive = false
                         }
-                    });
+                    })
             }
         },
 

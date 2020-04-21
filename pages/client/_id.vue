@@ -64,6 +64,15 @@ import ClientForm from "~/components/forms/ClientForm"
 export default {
 	name: "ClientView",
 
+	head() {
+		return {
+			titleTemplate: `Éditer le client ${this.clientName}`,
+			meta: [
+				{ hid: 'description', name: 'description', content: `Mettre à jour le client ${this.clientName}.` }
+			]
+		}
+	},
+
 	components: {
 		ClientForm
 	},
@@ -77,6 +86,7 @@ export default {
         return {
 			// Form fields
 			clientId: '',
+			clientName: '', // Meta title
 			client: {
 				preventEdit: true,
 				invalid: false
@@ -107,10 +117,13 @@ export default {
         // Update client to Firebase
         updateClient() {
             if(!this.client.invalid) {
+
+				// Update component states
 				this.deleteStepIndex = 0
 				this.errorMessage = ''
 				this.creationActive = true
 
+				// Update client from Firebase
 				this.$fireDb.ref("clients/" + this.clientId).update({
 					"name" : this.client.name,
 					"phone" : (this.client.phone) ? this.client.phone : null,
@@ -128,6 +141,7 @@ export default {
 			}
 		},
 
+		// Remove client from Firebase
 		deleteClient() {
 			this.deleteStepIndex++
 			if(this.deleteStepIndex == 2) {
@@ -168,6 +182,7 @@ export default {
 						let client = snapshot.val()
 						if(client.owner === user.uid) {
 							this.clientId = this.$route.params.id
+							this.clientName = client.name
 							this.displayClient(client) // Display and edit client
 						} else {
 							this.$nuxt.error({ statusCode: 403 }) // Redirect user to a 403 error page

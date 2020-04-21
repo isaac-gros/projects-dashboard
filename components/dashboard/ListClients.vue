@@ -82,7 +82,6 @@ export default {
 			let readableData = []
 
 			for(let [clientId, client] of Object.entries(clients)) {
-
 				let clientName = client.name
 				let clientMail = (client.mail) ? client.mail : "Non renseignée"
 				let clientPhone = (client.phone) ? client.phone : "Non renseigné"
@@ -97,6 +96,7 @@ export default {
 			return readableData
 		},
 
+		// Copy text to clipboard and display a message
 		async copyText(text) {
 			try {
 				await this.$copyText(text)
@@ -110,7 +110,7 @@ export default {
 		}
 	},
 
-	// Get clients
+	// Get clients on component mount
     mounted() {
         this.$fireAuth.onAuthStateChanged(user => {
 			if(user) {
