@@ -71,11 +71,13 @@
 <script>
 export default {
     name: "Menu",
+
     data() {
         return {
             showNavigation: false,
         }
     },
+    
     methods: {
         // Toggle menu
         toggleMenu() {

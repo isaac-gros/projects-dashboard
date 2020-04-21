@@ -60,7 +60,7 @@ export default {
     // Update parent
     watch: {
         value() {
-            this.$emit('input', this.object);
+            this.$emit('input', this.object)
         }
     }
 }

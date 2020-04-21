@@ -33,7 +33,7 @@ html {
 	overflow-x: hidden;
 }
 
-// Menu settings
+// Menu
 .menu {
 
 	&__container {
@@ -107,23 +107,6 @@ html {
 }
 
 // Authentification page
-.spinner_container {
-	@include flex-column;
-	min-height: 100vh;
-	justify-content: center;
-
-	&__element {
-		display: flex;
-		justify-content: center;
-	}
-
-	p {
-		font-size: 1.2rem;
-		text-align: center;
-		margin: 15px 0;
-	}
-}
-
 #home {
 	@include flex-column;
 	min-height: 100vh;
@@ -191,12 +174,28 @@ html {
 			z-index: 2;
 		}
 	
-	}
-
-	
+	}	
 }
 
-// Dashboard page
+// Loading screen
+.spinner_container {
+	@include flex-column;
+	min-height: 100vh;
+	justify-content: center;
+
+	&__element {
+		display: flex;
+		justify-content: center;
+	}
+
+	p {
+		font-size: 1.2rem;
+		text-align: center;
+		margin: 15px 0;
+	}
+}
+
+// Dashboard
 #dashboard {
 
 	.quick_action {
@@ -262,7 +261,6 @@ html {
 			}
 		}
 	}
-
 }
 
 // Error page
@@ -282,7 +280,7 @@ html {
 	}
 }
 
-// Key frames
+// Keyframes
 @keyframes zoomIn {
 	from {
 		transform: scale(0);

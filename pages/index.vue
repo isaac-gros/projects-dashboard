@@ -36,15 +36,19 @@ import LoginForm from "~/components/auth/LoginForm.vue";
 import RegisterForm from "~/components/auth/RegisterForm.vue";
 
 export default {
+	name: "Home",
+	
 	components: {
 		LoginForm,
 		RegisterForm
 	},
+
 	data() {
 		return {
 			noUserLoggedIn: false
 		}
 	},
+
 	mounted() {
 		this.$fireAuth.onAuthStateChanged(user => {
 			if(user) {

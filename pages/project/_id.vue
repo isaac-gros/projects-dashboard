@@ -121,10 +121,13 @@ export default {
         // Update project to Firebase
         updateProject() {
             if(!this.project.invalid) {
+
+				// Update component states
 				this.deleteStepIndex = 0
 				this.errorMessage = ''
 				this.creationActive = true
 
+				// Update project to Firebase
 				this.$fireDb.ref("projects/" + this.projectId).update({
 					"title" : this.project.title,
 					"endDate" : (this.project.endDate) ? this.project.endDate : null,
@@ -143,6 +146,7 @@ export default {
 			}
 		},
 
+		// Remove project from Firebase
 		deleteProject() {
 			this.deleteStepIndex++
 			if(this.deleteStepIndex == 2) {
@@ -178,8 +182,8 @@ export default {
 			this.updateActive = false
 		},
 
+		// Retrieve all clients created by user
 		fetchUserClients() {
-			// Retrieve all clients created by user
 			this.$fireDb.ref("clients/")
 				.orderByChild("owner")
 				.equalTo(this.userId)
@@ -188,7 +192,7 @@ export default {
 				})
 		},
 
-		// Display clients in front-end
+		// Read clients objects to display them
 		readUserClients(clients) {
 
 			// Final array where the data will be readable
@@ -223,7 +227,7 @@ export default {
     },
 
     mounted() {
-
+        this.$material.locale = this.frenchLocale()
         this.$fireAuth.onAuthStateChanged(user => {
             if(user) {
 
@@ -245,7 +249,6 @@ export default {
 				this.$router.push('/')
 			}
 		})
-        this.$material.locale = this.frenchLocale()
 	}
 
 }

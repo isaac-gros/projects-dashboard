@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<Menu v-if="$route.path !== '/'"/>
+		<Menu v-if="($route.path !== '/') && ($nuxt.error == null)"/>
 		<nuxt/>
 	</div>
 </template>

@@ -87,7 +87,6 @@ export default {
 			let readableData = []
 
 			for(let [projectId, project] of Object.entries(projects)) {
-
 				let projectStatus = project.status
 				let projectEndDate = (typeof(project.endDate) !== "undefined") ? project.endDate : "Indéfinie"
 				let projectClients = this.readProjectClientsData(project.clients)

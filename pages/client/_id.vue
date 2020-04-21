@@ -117,10 +117,13 @@ export default {
         // Update client to Firebase
         updateClient() {
             if(!this.client.invalid) {
+
+				// Update component states
 				this.deleteStepIndex = 0
 				this.errorMessage = ''
 				this.creationActive = true
 
+				// Update client from Firebase
 				this.$fireDb.ref("clients/" + this.clientId).update({
 					"name" : this.client.name,
 					"phone" : (this.client.phone) ? this.client.phone : null,
@@ -138,6 +141,7 @@ export default {
 			}
 		},
 
+		// Remove client from Firebase
 		deleteClient() {
 			this.deleteStepIndex++
 			if(this.deleteStepIndex == 2) {

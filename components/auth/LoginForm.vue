@@ -2,13 +2,16 @@
     <div class="forms_container__form">
         <div name="login_form" class="login_form">
 
-            <h1>Connectez-vous</h1>
-
-            <md-progress-spinner 
-                class="md-primary"
-                md-mode="indeterminate"
-                v-if="loginFunctionActive">
-            </md-progress-spinner>
+            <h1>
+                Connectez-vous
+                <md-progress-spinner 
+                    class="md-primary"
+                    md-mode="indeterminate"
+                    md-diameter=20
+                    md-stroke=3
+                    v-if="loginFunctionActive">
+                </md-progress-spinner>
+            </h1>
 
             <md-field :class="getValidationClass('email')">
                 <label for="email_login">Adresse e-mail</label>
@@ -30,7 +33,7 @@
                 <span class="md-error" v-if="!$v.password.minLength">Le mot de passe doit faire au minimum 6 caractères.</span>
             </md-field>
 
-            <span v-if="loginErrorMessage">{{ loginErrorMessage }}</span>
+            <span v-if="loginErrorMessage">Erreur lors de la connexion : {{ loginErrorMessage }}</span>
 
             <md-button class="md-raised md-primary" v-on:click="loginUser">
                 Connexion
@@ -95,15 +98,17 @@ export default {
             this.loginErrorMessage = ''
 
             if(!this.$v.invalid) {
+                this.loginFunctionActive = true
                 this.$fireAuth.signInWithEmailAndPassword(this.email, this.password)
                 .then(user => {
                     if(user) {
-                        this.$router.push("/dashboard")
+                        this.$router.push("/dashboard") // Redirect to dashboard if success
                     }
                 })
                 .catch(error => {
-                    this.loginErrorMessage = error.message
-                });
+                    this.loginFunctionActive = false
+                    this.loginErrorMessage = error.message // Show error message
+                })
             }
         }
     },

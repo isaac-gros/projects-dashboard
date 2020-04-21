@@ -20,6 +20,7 @@ import ListProjects from "~/components/dashboard/ListProjects"
 import ListClients from "~/components/dashboard/ListClients"
 
 export default {
+	name: "Dashboard",
 
 	head: {
 		titleTemplate: "Mes projets - Tableau de bord",
@@ -34,6 +35,7 @@ export default {
 		ListClients
 	},
 
+	// Redirect user to login page if not logged in
 	mounted() {
 		this.$fireAuth.onAuthStateChanged(user => {
 			if(!user) {
