@@ -68,6 +68,23 @@ html {
 }
 
 // Authentification page
+.spinner_container {
+	@include flex-column;
+	min-height: 100vh;
+	justify-content: center;
+
+	&__element {
+		display: flex;
+		justify-content: center;
+	}
+
+	p {
+		font-size: 1.2rem;
+		text-align: center;
+		margin: 15px 0;
+	}
+}
+
 #home {
 	@include flex-column;
 	min-height: 100vh;
@@ -136,6 +153,8 @@ html {
 		}
 	
 	}
+
+	
 }
 
 // Dashboard page
