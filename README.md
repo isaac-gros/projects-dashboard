@@ -1,6 +1,6 @@
 # DVIC Monitoring
 
-Application NuxtJS de gestion de projets pour indépendants. Réalisé avec [Vue Material](https://vuematerial.io/)
+Application NuxtJS de gestion de projets pour indépendants. Réalisé avec [Vue Material](https://vuematerial.io/).
 
 ## Features
 * Création et modification de projets
@@ -9,17 +9,29 @@ Application NuxtJS de gestion de projets pour indépendants. Réalisé avec [Vue
 
 ### Installation
 
+1. Cloner le projet et installer les dépendances.
+
 ``` bash
-# install dependencies
-$ npm install # Or yarn install
+git clone https://github.com/isaac-gros/dvic-monitoring.git
+cd dvic-monitoring
+npm install
+```
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+2. Ajouter les paramètres de configuration d'une application [Firebase](https://console.firebase.google.com/) au fichier `.env.example`. Une fois la configuration terminée, renommer le fichier `.env.example` en `.env`. Note : Les outils Analytics pour Firebase n'ont pas été activés pour ce projet.
 
-# build for production and launch server
-$ npm run build
-$ npm start
+``` conf
+# Firebase configuration
+apiKey=""
+authDomain=""
+databaseURL=""
+projectId=""
+storageBucket=""
+messagingSenderId=""
+appId=""
+```
 
-# generate static project
-$ npm run generate
+3. Démarrer le serveur en éxécutant la commande suivante
+
+``` bash
+npm run dev
 ```
