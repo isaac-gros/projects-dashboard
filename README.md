@@ -1,8 +1,8 @@
-# DVIC Monitoring
+# Tableau de bord de projets
 
 Application NuxtJS de gestion de projets pour indépendants. Réalisé avec [Vue Material](https://vuematerial.io/).
 
-## Features
+## Fonctionnalités
 * Création et modification de projets
 * Création et modification de clients
 * Actions rapides depuis le tableau de bord
